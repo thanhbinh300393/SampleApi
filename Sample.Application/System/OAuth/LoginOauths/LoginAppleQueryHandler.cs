@@ -7,11 +7,9 @@ using Sample.Common.Caching;
 using Sample.Common.CQRS.Queries;
 using Sample.Common.Domain;
 using Sample.Common.Exceptions;
-using Sample.Common.Extentions;
 using Sample.Common.FilterList;
 using Sample.Common.Heplers;
 using Sample.Common.UserSessions;
-using Sample.Domain.Resources;
 using Sample.Domain.System.Oauth;
 using Sample.Domain.System.Users;
 using System.IdentityModel.Tokens.Jwt;
@@ -26,17 +24,15 @@ public class LoginAppleQueryHandler : QueryHandlerBase<LoginAppleQuery, UserInfo
     private readonly UserManager<User> _userManager;
     private readonly IJwtTokenProvider _jwtTokenProvider;
     private readonly IDistributedCache _distributedCache;
-    private readonly ISequenceProvider _sequenceProvider;
     private readonly IDapperRepository<DapperUser> _dapperUserRepository;
 
 
-    public LoginAppleQueryHandler(IServiceProvider serviceProvider, IDapperRepository<User> userRepository, UserManager<User> userManager, IJwtTokenProvider jwtTokenProvider, IDistributedCache distributedCache, ISequenceProvider sequenceProvider, IDapperRepository<DapperUser> dapperUserRepository) : base(serviceProvider)
+    public LoginAppleQueryHandler(IServiceProvider serviceProvider, IDapperRepository<User> userRepository, UserManager<User> userManager, IJwtTokenProvider jwtTokenProvider, IDistributedCache distributedCache, IDapperRepository<DapperUser> dapperUserRepository) : base(serviceProvider)
     {
         _userRepository = userRepository;
         _userManager = userManager;
         _jwtTokenProvider = jwtTokenProvider;
         _distributedCache = distributedCache;
-        _sequenceProvider = sequenceProvider;
         _dapperUserRepository = dapperUserRepository;
     }
 
@@ -111,12 +107,12 @@ public class ApplePublicKey
 
     public class Key
     {
-        public string kty { get; set; }
-        public string kid { get; set; }
-        public string use { get; set; }
-        public string alg { get; set; }
-        public string n { get; set; }
-        public string e { get; set; }
+        public string kty { get; set; } = string.Empty;
+        public string kid { get; set; } = string.Empty;
+        public string use { get; set; } = string.Empty;
+        public string alg { get; set; } = string.Empty;
+        public string n { get; set; } = string.Empty;
+        public string e { get; set; } = string.Empty;
     }
 }
 

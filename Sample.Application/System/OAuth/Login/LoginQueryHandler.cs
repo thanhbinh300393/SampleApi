@@ -35,6 +35,8 @@ namespace Sample.Application.System.Users.OAuth.Login
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByNameAsync(request.Data.UserName);
+                if (user == null)
+                    throw new UnauthorizedException($"Tài khoản {request.Data.UserName} không tồn tại trong hệ thống.");
 
                 var userInfo = _jwtTokenProvider.GetToken(user.GetUserInfo(), request.Data.IsRemember);
                 _distributedCache.SetUserInfo($"Bearer {userInfo.Token}", userInfo);

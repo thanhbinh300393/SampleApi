@@ -1,0 +1,15 @@
+D:\Project\SampleNetAPI\Sample.Common\bin\Debug\net8.0\Sample.Common.deps.json
+D:\Project\SampleNetAPI\Sample.Common\bin\Debug\net8.0\Sample.Common.dll
+D:\Project\SampleNetAPI\Sample.Common\bin\Debug\net8.0\Sample.Common.pdb
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\Sample.Common.csproj.AssemblyReference.cache
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\Sample.Common.Languages.CommonResource.resources
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\Sample.Common.csproj.GenerateResource.cache
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\Sample.Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\Sample.Common.AssemblyInfoInputs.cache
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\Sample.Common.AssemblyInfo.cs
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\Sample.Common.csproj.CoreCompileInputs.cache
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\Sample.Common.sourcelink.json
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\Sample.Common.dll
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\refint\Sample.Common.dll
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\Sample.Common.pdb
+D:\Project\SampleNetAPI\Sample.Common\obj\Debug\net8.0\ref\Sample.Common.dll

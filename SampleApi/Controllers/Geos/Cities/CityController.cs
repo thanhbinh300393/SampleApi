@@ -7,6 +7,7 @@ using Sample.Api.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using ILogger = Serilog.ILogger;
 
 namespace Sample.Api.Controllers.Geos.Cities
 {
@@ -16,7 +17,7 @@ namespace Sample.Api.Controllers.Geos.Cities
     {
         public CityController(
             IMediator mediator,
-            ILogger<CityController> logger,
+            ILogger logger,
             IUserSession userSession)
             : base(mediator, logger, userSession)
         {

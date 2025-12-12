@@ -7,7 +7,7 @@ namespace Sample.Common.Caching
 {
     public static class DistributedCacheExtension
     {
-        public static UserInfo GetUserInfo(this IDistributedCache distributedCache, string accessToken)
+        public static UserInfo? GetUserInfo(this IDistributedCache distributedCache, string accessToken)
         {
             var userInfoJson = distributedCache.GetString($"{KeyCacheConstants.KEY_TOKEN}.{accessToken}");
             if (string.IsNullOrWhiteSpace(userInfoJson))

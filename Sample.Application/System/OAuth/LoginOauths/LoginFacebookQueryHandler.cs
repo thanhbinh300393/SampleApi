@@ -6,7 +6,6 @@ using Sample.Common.Caching;
 using Sample.Common.CQRS.Queries;
 using Sample.Common.Domain;
 using Sample.Common.Exceptions;
-using Sample.Common.Extentions;
 using Sample.Common.FilterList;
 using Sample.Common.Heplers;
 using Sample.Common.UserSessions;
@@ -21,7 +20,6 @@ namespace Sample.Application.System.OAuth.LoginOauths
         private readonly UserManager<User> _userManager;
         private readonly IJwtTokenProvider _jwtTokenProvider;
         private readonly IDistributedCache _distributedCache;
-        private readonly ISequenceProvider _sequenceProvider;
         private readonly IDapperRepository<DapperUser> _dapperUserRepository;
         public LoginFacebookQueryHandler(
             IJwtTokenProvider jwtTokenProvider,
@@ -34,15 +32,14 @@ namespace Sample.Application.System.OAuth.LoginOauths
             _userRepository = userRepository;
             _jwtTokenProvider = jwtTokenProvider;
             _distributedCache = distributedCache;
-            _sequenceProvider = sequenceProvider;
             _userManager = userManager;
             _dapperUserRepository = dapperUserRepository;
         }
 
         public override async Task<UserInfo> QueryHandle(LoginFacebookQuery request, CancellationToken cancellationToken)
         {
-            string appId = _configuration["FacebookApp:FacebookAppId"];
-            string appSecret = _configuration["FacebookApp:FacebookAppSecret"];
+            var appId = _configuration["FacebookApp:FacebookAppId"];
+            var appSecret = _configuration["FacebookApp:FacebookAppSecret"];
             string appAccessToken = $"{appId}|{appSecret}";
 
             string validationUrl = $"https://graph.facebook.com/debug_token?input_token={request.Token}&access_token={appAccessToken}";
@@ -51,6 +48,12 @@ namespace Sample.Application.System.OAuth.LoginOauths
             HttpResponseMessage response = await client.GetAsync(validationUrl);
             string result = await response.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<FacebookTokenValidationResult>(result);
+
+            if (res?.Data == null)
+            {
+                throw new BusinessException("Không xác thực được token Facebook, vui lòng thử lại sau.", "Facebook token validation error", request);
+            }
+
             var timeExpire = DateTimeOffset.FromUnixTimeSeconds(res.Data.expires_at);
             if (res.Data.is_valid && timeExpire.DateTime.AddHours(1) > DateTime.Now.ToUniversalTime())
             {
@@ -76,7 +79,7 @@ namespace Sample.Application.System.OAuth.LoginOauths
                     else
                     {
                         var passwordDefault = _configuration["PasswordDefault:password"];
-                        
+
                         var user = new User()
                         {
                             UserName = userProfile.email,
@@ -91,7 +94,6 @@ namespace Sample.Application.System.OAuth.LoginOauths
 
                         await _userManager.CreateAsync(user, passwordDefault ?? "Buca@19006419");
 
-                        // dùng thằng _userManager nên hiện tại phải làm kiểu này
                         var userDapper = MapHelper.Mapper<User, DapperUser>(user);
                         await _dapperUserRepository.UpdateAsync(userDapper);
 
@@ -110,23 +112,23 @@ namespace Sample.Application.System.OAuth.LoginOauths
 
         public class FacebookTokenValidationResult
         {
-            public FacebookTokenData Data { get; set; }
+            public FacebookTokenData? Data { get; set; }
         }
 
         public class FacebookTokenData
         {
             public bool is_valid { get; set; }
-            public string user_id { get; set; }
-            public string app_id { get; set; }
+            public string user_id { get; set; } = string.Empty;
+            public string app_id { get; set; } = string.Empty;
             public long expires_at { get; set; }
             public long issued_at { get; set; }
         }
 
         public class FacebookUser
         {
-            public string id { get; set; }
-            public string name { get; set; }
-            public string email { get; set; }
+            public string id { get; set; } = string.Empty;
+            public string name { get; set; } = string.Empty;
+            public string email { get; set; } = string.Empty;
         }
     }
 }

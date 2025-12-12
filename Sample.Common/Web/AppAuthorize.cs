@@ -11,21 +11,21 @@ namespace Sample.Common.Web
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
-            IUserSession userSession = (IUserSession)context.HttpContext.RequestServices.GetService(typeof(IUserSession));
-            IDistributedCache distributedCache = (IDistributedCache)context.HttpContext.RequestServices.GetService(typeof(IDistributedCache));
+            IUserSession? userSession = context.HttpContext.RequestServices.GetService(typeof(IUserSession)) as IUserSession;
+            IDistributedCache? distributedCache = context.HttpContext.RequestServices.GetService(typeof(IDistributedCache)) as IDistributedCache;
 
             var isLogin = false;
             if (context.HttpContext.Request.Headers.ContainsKey("Authorization"))
             {
                 var accessToken = context.HttpContext.Request.Headers["Authorization"].ToString();
-                if (!distributedCache.IsLoggedOut(accessToken))
+                if (distributedCache != null && !distributedCache.IsLoggedOut(accessToken))
                 {
                     isLogin = true;
-                    UserInfo userInfo = distributedCache.GetUserInfo(accessToken);
+                    UserInfo? userInfo = distributedCache.GetUserInfo(accessToken);
                     if (userInfo != null)
                     {
                         userInfo.Token = accessToken;
-                        userSession.SetUserInfo(userInfo);
+                        userSession?.SetUserInfo(userInfo);
                     }
                     else isLogin = false;
                 }

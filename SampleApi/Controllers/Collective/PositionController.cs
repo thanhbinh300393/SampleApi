@@ -15,9 +15,9 @@ using ILogger = Serilog.ILogger;
 namespace Sample.Api.Controllers.Collective.Positions
 {
     [Route("api/position")]
-    public class PositionController : HostControllerBaseAnonymous
+    public class PositionController : HostControllerBase
     {
-        public PositionController(IMediator mediator, ILogger<PositionController> logger, IUserSession userSession) : base(mediator, logger, userSession)
+        public PositionController(IMediator mediator, ILogger logger, IUserSession userSession) : base(mediator, logger, userSession)
         {
         }
 

@@ -1,6 +1,9 @@
-﻿using Google;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Sample.Application;
 using Sample.Common.Caching;
 using Sample.Common.Database;
@@ -13,22 +16,15 @@ using Sample.Common.Processing;
 using Sample.Common.Processing.Providers;
 using Sample.Common.UserSessions;
 using Sample.Common.Web;
-using Sample.Domain.Collective.Positions;
-using Sample.Domain.Configuration;
 using Sample.Domain.Resources;
-using Sample.Domain.System.Users;
-using Serilog;
-using StackExchange.Redis;
-using System.Text.Json.Serialization;
-using Sample.Infrastructure.Database;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Sample.Domain.System.Oauth;
-using System.Security.Claims;
+using Sample.Domain.System.Users;
 using Sample.Infrastructure.Authentication;
+using Sample.Infrastructure.Database;
+using Serilog;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,7 +58,39 @@ builder.Services.AddStackExchangeRedisCache(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+                        },
+                        new List<string>()
+                    }
+                });
+}
+
+);
 
 builder.Services.AddHttpContextAccessor(); // cần để inject IHttpContextAccessor
 builder.Services.AddScoped<IUserSession, UserSession>();

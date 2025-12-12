@@ -1,6 +1,7 @@
 ﻿using Sample.Common.UserSessions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ILogger = Serilog.ILogger;
 
 namespace Sample.Api.Configuration
 {
@@ -10,10 +11,7 @@ namespace Sample.Api.Configuration
         protected readonly ILogger _logger;
         protected readonly IUserSession _userSession;
 
-        public HostControllerBaseAnonymous(
-            IMediator mediator,
-            ILogger<HostControllerBaseAnonymous> logger,
-            IUserSession userSession)
+        public HostControllerBaseAnonymous(IMediator mediator, ILogger logger, IUserSession userSession)
         {
             _mediator = mediator;
             _logger = logger;
