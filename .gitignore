@@ -1,0 +1,22 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Sample.Application/bin/Debug/net8.0
+/Sample.Application/obj/Debug/net8.0
+/Sample.Application/obj
+/Sample.Infrastructure/bin/Debug/net8.0
+/Sample.Infrastructure/obj/Debug/net8.0
+/SampleDomain/bin/Debug/net8.0
+/SampleDomain/obj/Debug/net8.0
+/SampleDomain/obj
+/Sample.Infrastructure/obj
+/Sample.Common/obj/Debug/net8.0/ref/Sample.Common.dll
+/Sample.Common/obj/Debug/net8.0/refint/Sample.Common.dll
+/Sample.Common/obj/Debug/net8.0/Sample.Common.AssemblyInfo.cs
+/Sample.Common/obj/Debug/net8.0/Sample.Common.AssemblyInfoInputs.cache
+/Sample.Common/obj/Debug/net8.0/Sample.Common.dll
+/Sample.Common/obj/Debug/net8.0/Sample.Common.pdb
+/Sample.Common/obj/Debug/net8.0/Sample.Common.sourcelink.json
+/Sample.Common/bin/Debug/net8.0/Sample.Common.dll
+/Sample.Common/bin/Debug/net8.0/Sample.Common.pdb
