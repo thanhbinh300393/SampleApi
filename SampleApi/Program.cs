@@ -19,8 +19,10 @@ using Sample.Common.Web;
 using Sample.Domain.Resources;
 using Sample.Domain.System.Oauth;
 using Sample.Domain.System.Users;
+using Sample.Infrastructure;
 using Sample.Infrastructure.Authentication;
 using Sample.Infrastructure.Database;
+using Sample.Infrastructure.Domain;
 using Serilog;
 using System.Security.Claims;
 using System.Text;
@@ -117,9 +119,11 @@ builder.Services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
 
 // 5. Dapper unit of work
 builder.Services.AddScoped<IDapperUnitOfWork, DapperUnitOfWork>();
+builder.Services.AddScoped<IEFUnitOfWork, EFUnitOfWork>();
 
 // 6. Generic repository
 builder.Services.AddScoped(typeof(IDapperRepository<>), typeof(GenericDapperRepository<>));
+builder.Services.AddScoped(typeof(IEFRepository<>), typeof(GenericEFRepository<>));
 
 // 7. MediatR handlers
 builder.Services.AddMediatR(cfg =>
