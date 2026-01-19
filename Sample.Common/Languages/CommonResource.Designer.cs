@@ -124,6 +124,15 @@ namespace Sample.Common.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thông tin này là bắt buộc.
+        /// </summary>
+        public static string FieldIsRequired {
+            get {
+                return ResourceManager.GetString("FieldIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to năm.
         /// </summary>
         public static string Five {
@@ -156,6 +165,15 @@ namespace Sample.Common.Languages {
         public static string HundredUnit {
             get {
                 return ResourceManager.GetString("HundredUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dữ liệu đầu vào không đúng..
+        /// </summary>
+        public static string InputDataIsWrong {
+            get {
+                return ResourceManager.GetString("InputDataIsWrong", resourceCulture);
             }
         }
         
@@ -196,6 +214,15 @@ namespace Sample.Common.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đã phát sinh nghiệp vụ.
+        /// </summary>
+        public static string NoneBusinessArises {
+            get {
+                return ResourceManager.GetString("NoneBusinessArises", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to lẻ.
         /// </summary>
         public static string Odd {
@@ -219,6 +246,15 @@ namespace Sample.Common.Languages {
         public static string OneUnit {
             get {
                 return ResourceManager.GetString("OneUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không tìm thấy bản ghi.
+        /// </summary>
+        public static string RecordNotFound {
+            get {
+                return ResourceManager.GetString("RecordNotFound", resourceCulture);
             }
         }
         

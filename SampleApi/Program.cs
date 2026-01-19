@@ -11,6 +11,7 @@ using Sample.Common.Domain;
 using Sample.Common.Exceptions;
 using Sample.Common.Extentions;
 using Sample.Common.FilterList;
+using Sample.Common.Languages;
 using Sample.Common.Logging;
 using Sample.Common.Processing;
 using Sample.Common.Processing.Providers;
@@ -260,6 +261,7 @@ services.AddCors(options =>
     });
 });
 
+builder.Services.AddScoped<ILanguageProvider<CommonResource>, LanguageProvider<CommonResource>>();
 
 var app = builder.Build();
 

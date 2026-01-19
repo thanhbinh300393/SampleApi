@@ -11,16 +11,24 @@ namespace Sample.Common.Web
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            ILanguageProvider<CommonResource> l = filterContext.HttpContext.RequestServices.GetService<ILanguageProvider<CommonResource>>();
+            var l = filterContext.HttpContext.RequestServices
+                .GetRequiredService<ILanguageProvider<CommonResource>>();
 
             if (!filterContext.ModelState.IsValid)
             {
-                Dictionary<string, string[]> validates = new Dictionary<string, string[]>();
-                foreach (var item in filterContext.ModelState)
-                {
-                    validates.Add(item.Key, item.Value.Errors.Select(x => l[x.ErrorMessage]).ToArray());
-                }
-                throw new BadRequestException(l["InputDataIsWrong"], "Input data is wrong", data: validates);
+                var validates = filterContext.ModelState
+                    .Where(x => x.Value.Errors.Count > 0)
+                    .ToDictionary(
+                        x => x.Key,
+                        x => x.Value.Errors
+                            .Select(e => l[e.ErrorMessage])
+                            .ToArray()
+                    );
+                throw new BadRequestException(
+                    l["InputDataIsWrong"],
+                    "Input data is wrong",
+                    data: validates
+                );
             }
         }
     }
