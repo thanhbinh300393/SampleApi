@@ -5,6 +5,7 @@ namespace Sample.Domain.Collective.Positions.Dto
     public class PositionInput
     {
         [Required(ErrorMessage = "FieldIsRequired")]
+        [MaxLength(50)]
         public string Code { get; set; }
         [Required(ErrorMessage = "FieldIsRequired")]
         public string Name { get; set; }

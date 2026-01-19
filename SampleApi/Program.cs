@@ -195,27 +195,30 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-                .AddJwtBearer(options =>
-                {
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration[JwtTokenConstants.SecretKey]));
-                    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+.AddJwtBearer(options =>
+{
+    var secretKey = configuration[JwtTokenConstants.SecretKey];
+    if (string.IsNullOrEmpty(secretKey))
+        throw new InvalidOperationException($"JWT secret key '{JwtTokenConstants.SecretKey}' is not configured.");
+    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        NameClaimType = ClaimTypes.NameIdentifier,
-                        ValidateLifetime = true,
-                        ValidateIssuer = true,
-                        ValidIssuer = configuration[JwtTokenConstants.Issuer],
-                        ValidateIssuerSigningKey = true,
-                        ValidateAudience = true,
-                        ValidAudience = configuration[JwtTokenConstants.Audience],
-                        IssuerSigningKey = credentials.Key,
-                        ClockSkew = TimeSpan.Zero,
-                        SaveSigninToken = true,
-                    };
-                });
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = ClaimTypes.NameIdentifier,
+        ValidateLifetime = true,
+        ValidateIssuer = true,
+        ValidIssuer = configuration[JwtTokenConstants.Issuer],
+        ValidateIssuerSigningKey = true,
+        ValidateAudience = true,
+        ValidAudience = configuration[JwtTokenConstants.Audience],
+        IssuerSigningKey = credentials.Key,
+        ClockSkew = TimeSpan.Zero,
+        SaveSigninToken = true,
+    };
+});
 builder.Services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 builder.Services.AddScoped<IPasswordProvider, PasswordProvider>();
 
