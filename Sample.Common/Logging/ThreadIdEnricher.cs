@@ -22,7 +22,8 @@ namespace Sample.Common.Logging
             var httpContext = _httpContextAccessor.HttpContext;
 
             var requestId = httpContext?.Items["RequestId"] as string
-                ?? Guid.NewGuid().ToString();
+               ?? httpContext?.TraceIdentifier
+               ?? Guid.NewGuid().ToString();
 
             httpContext?.Items.TryAdd("RequestId", requestId);
 
