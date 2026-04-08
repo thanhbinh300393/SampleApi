@@ -40,6 +40,7 @@ namespace Sample.Application.System.Users.OAuth.Login
 
                 var userInfo = _jwtTokenProvider.GetToken(user.GetUserInfo(), request.Data.IsRemember);
                 _distributedCache.SetUserInfo($"Bearer {userInfo.Token}", userInfo);
+                _distributedCache.SetUserInfo($"Bearer {userInfo.RefreshToken}", userInfo);
                 return userInfo;
 
             }

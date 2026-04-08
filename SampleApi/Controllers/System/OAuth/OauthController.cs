@@ -43,6 +43,16 @@ namespace Sample.Api.Controllers.System.OAuth
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var result = await _mediator.Send(new LoginQuery(request));
+            if (!string.IsNullOrEmpty(result.RefreshToken))
+            {
+                Response.Cookies.Append("refreshToken", result.RefreshToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddDays(7)
+                });
+            }
             return Ok(result);
         }
 
@@ -67,11 +77,23 @@ namespace Sample.Api.Controllers.System.OAuth
             return Ok(result);
         }
 
-        [AppAuthorize]
+        [AllowAnonymous]
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken()
         {
-            var result = await _mediator.Send(new RefreshTokenQuery());
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (refreshToken == null) return Unauthorized();
+            var result = await _mediator.Send(new RefreshTokenQuery(refreshToken));
+            if (!string.IsNullOrEmpty(result.RefreshToken))
+            {
+                Response.Cookies.Append("refreshToken", result.RefreshToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddDays(7)
+                });
+            }
             return Ok(result);
         }
 
